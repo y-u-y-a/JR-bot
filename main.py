@@ -4,7 +4,7 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage, LocationM
 
 from flask import Flask, request, abort
 import os
-import scrape as sc
+import scrape
 import function as func
 
 # Flaskクラスのインスタンスを生成し、変数appに代入する
@@ -36,26 +36,28 @@ def callback():
 
 # WebhookHandlerクラスで用意してあるaddというメソッドをデコレートしている
 @handler.add(MessageEvent, message=TextMessage)
-# 駅名から列車到着時刻を取得する
-def reply_message(MessageEvent):
-    get_text = MessageEvent.message.text.replace("駅", "")
 
-    if "終電" in get_text:
-        station_name = get_text.replace("終電", "")
-        if station_name == "":
-            station_name = "あああ"
-        info = sc.reply_last_time(station_name)
-        next_or_last = "終電"
+def reply_message(MessageEvent):
+    station_name = MessageEvent.message.text.replace("駅", "")
+
+    if "終電" in station_name:
+        station_name = station_name.replace("終電", "")
+
+        get_data = scrape.reply_last_time(station_name)
+        pre_message = "最終"
+
     else:
-        info = sc.reply_next_time(get_text)
-        next_or_last = "次の出発"
+        get_data = scrape.reply_next_time(station_name)
+        pre_message = "次の出発"
+
     # メッセージをビルド
-    message = func.create_message(info, next_or_last)
+    message = func.create_message(get_data)
+
     line_bot_api.reply_message(
-        MessageEvent.reply_token, # 送信相手とのトークン？
-        TextSendMessage(
-            text=message
-        )
+        MessageEvent.reply_token, [
+            TextSendMessage(text=pre_message),
+            TextSendMessage(text=message)
+        ]
     )
 
 # "__name__"はこのファイルが呼ばれたファイルの名前が入る(ここでは"main")
