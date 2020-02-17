@@ -47,7 +47,7 @@ def reply_message(MessageEvent):
         info = sc.reply_last_time(station_name)
         next_or_last = "終電"
     else:
-        info = sc.reply_next_time(station_name)
+        info = sc.reply_next_time(get_text)
         next_or_last = "次の出発"
     # メッセージをビルド
     message = func.create_message(info, next_or_last)
