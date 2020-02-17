@@ -38,12 +38,12 @@ def callback():
 def reply_message(MessageEvent):
 
     station_name = MessageEvent.message.text.replace("駅", "")
-    # スクレイピング
-    next_data = times.get(station_name, "next")
-    last_data = times.get(station_name, "last")
+    # 時刻取得
+    next_time = times.get(station_name, "next")
+    last_time = times.get(station_name, "last")
     # messageビルド
-    message_last = message.build(next_data, "次の出発")
-    message_next = message.build(last_data, "最終")
+    message_last = message.build(next_time, "次の出発")
+    message_next = message.build(last_time, "最終")
     # テキスト送信
     line_bot_api.reply_message(
         MessageEvent.reply_token, [
