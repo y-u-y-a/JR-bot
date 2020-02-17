@@ -15,10 +15,9 @@ LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET       = os.environ["LINE_CHANNEL_SECRET"]
 # Botのインスタンスの作成
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
-# webhookとはイベント発生時に指定したURLにPOSTリクエストする仕組みのこと
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
-# Flaskクラスで用意してあるrouteというメソッドをデコレートしている
+# Flaskクラスで用意してあるrouteというメソッドをデコレートして実行
 @app.route("/callback", methods=['POST'])
 # webhookからのリクエスト検証を行う
 def callback():
@@ -34,17 +33,16 @@ def callback():
         abort(400)
     return "OK"
 
-# WebhookHandlerクラスで用意してあるaddというメソッドをデコレートしている
+# WebhookHandlerクラスで用意してあるaddというメソッドをデコレートして実行
 @handler.add(MessageEvent, message=TextMessage)
-
 def reply_message(MessageEvent):
-    station_name = MessageEvent.message.text.replace("駅", "")
 
+    station_name = MessageEvent.message.text.replace("駅", "")
     # スクレイピング・メッセージビルド
-    next_data = scrape.reply_next_time(station_name, "次の出発")
-    last_data = scrape.reply_last_time(station_name, "最終")
-    message_last = func.create_message(next_data)
-    message_next = func.create_message(last_data)
+    next_data = scrape.reply_next_time(station_name)
+    last_data = scrape.reply_last_time(station_name)
+    message_last = func.create_message(next_data, "次の出発")
+    message_next = func.create_message(last_data, "最終")
 
     line_bot_api.reply_message(
         MessageEvent.reply_token, [
