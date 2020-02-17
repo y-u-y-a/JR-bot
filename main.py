@@ -37,6 +37,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 
 def sample(MessageEvent):
+    reply_message(MessageEvent)
     station_name = MessageEvent.message.text.replace("駅", "")
     # スクレイピング・メッセージビルド
     next_data = scrape.reply_next_time(station_name)
