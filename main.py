@@ -57,8 +57,8 @@ def reply_message(MessageEvent):
             TemplateSendMessage(
                 alt_text="JR-times",
                 template=ButtonsTemplate(
-                    title="全ての時刻表を表示する",
                     text="外部ページにアクセスします",
+                    title="全ての時刻表を表示する",
                     image_size="cover",
                     thumbnail_image_url="images/JR.jpeg",
                     actions=[
