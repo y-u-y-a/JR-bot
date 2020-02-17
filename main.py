@@ -35,6 +35,22 @@ def callback():
 
 # WebhookHandlerクラスで用意してあるaddというメソッドをデコレートして実行
 @handler.add(MessageEvent, message=TextMessage)
+
+def sample():
+    station_name = MessageEvent.message.text.replace("駅", "")
+    # スクレイピング・メッセージビルド
+    next_data = scrape.reply_next_time(station_name)
+    last_data = scrape.reply_last_time(station_name)
+    message_last = func.create_message(next_data, "次の出発")
+    message_next = func.create_message(last_data, "最終")
+
+    line_bot_api.reply_message(
+        MessageEvent.reply_token, [
+            TextSendMessage(text=message_last),
+            TextSendMessage(text=message_next)
+        ]
+    )
+
 def reply_message(MessageEvent):
 
     station_name = MessageEvent.message.text.replace("駅", "")
@@ -46,8 +62,8 @@ def reply_message(MessageEvent):
 
     line_bot_api.reply_message(
         MessageEvent.reply_token, [
-            TextSendMessage(text=message_next),
-            TextSendMessage(text=message_last)
+            TextSendMessage(text=message_last),
+            TextSendMessage(text=message_next)
         ]
     )
 
