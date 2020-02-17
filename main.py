@@ -1,6 +1,9 @@
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage, LocationMessage
+from linebot.models import (
+    MessageEvent, TextMessage, TextSendMessage,
+    TemplateSendMessage, ButtonsTemplate,URIAction
+)
 
 from flask import Flask, request, abort
 import os
@@ -47,8 +50,25 @@ def reply_message(MessageEvent):
     # テキスト送信
     line_bot_api.reply_message(
         MessageEvent.reply_token, [
+            # テキストmessage
             TextSendMessage(text=message_last),
-            TextSendMessage(text=message_next)
+            TextSendMessage(text=message_next),
+            # ボタンmessage
+            TemplateSendMessage(
+                alt_text="JR-times",
+                template=ButtonsTemplate(
+                    title="全ての時刻表を表示する",
+                    text="外部ページにアクセスします",
+                    image_size="cover",
+                    thumbnail_image_url="images/JR.jpeg",
+                    actions=[
+                        URIAction(
+                            uri="https://qiita.com/shimayu22/items/c599a94dfa39c6466dfa",
+                            label="移動する"
+                        )
+                    ]
+                )
+            )
         ]
     )
 
