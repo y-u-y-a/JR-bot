@@ -40,23 +40,16 @@ def callback():
 def reply_message(MessageEvent):
     station_name = MessageEvent.message.text.replace("駅", "")
 
-    if "終電" in station_name:
-        station_name = station_name.replace("終電", "")
-
-        get_data = scrape.reply_last_time(station_name)
-        pre_message = "最終"
-
-    else:
-        get_data = scrape.reply_next_time(station_name)
-        pre_message = "次の出発"
-
-    # メッセージをビルド
-    message = func.create_message(get_data)
+    # スクレイピング・メッセージビルド
+    next_data = scrape.reply_next_time(station_name, "次の出発")
+    last_data = scrape.reply_last_time(station_name, "最終")
+    message_last = func.create_message(next_data)
+    message_next = func.create_message(last_data)
 
     line_bot_api.reply_message(
         MessageEvent.reply_token, [
-            TextSendMessage(text=pre_message),
-            TextSendMessage(text=message)
+            TextSendMessage(text=message_next),
+            TextSendMessage(text=message_last)
         ]
     )
 
