@@ -57,10 +57,10 @@ def reply_message(MessageEvent):
             TemplateSendMessage(
                 alt_text="JR-times",
                 template=ButtonsTemplate(
-                    text="外部ページにアクセスします",
                     title="全ての時刻表を表示する",
+                    text="外部ページにアクセスします",
                     image_size="cover",
-                    thumbnail_image_url="images/JR.jpeg",
+                    thumbnail_image_url="jr.jpeg",
                     actions=[
                         URIAction(
                             uri="https://qiita.com/shimayu22/items/c599a94dfa39c6466dfa",
