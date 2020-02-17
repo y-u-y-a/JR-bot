@@ -5,8 +5,7 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage, LocationM
 from flask import Flask, request, abort
 import os
 
-import scrape
-import message
+from functions import times, message
 
 # Flaskクラスのインスタンスを生成し、変数appに代入する
 app = Flask(__name__)
@@ -40,8 +39,8 @@ def reply_message(MessageEvent):
 
     station_name = MessageEvent.message.text.replace("駅", "")
     # スクレイピング
-    next_data = scrape.reply_next_time(station_name)
-    last_data = scrape.reply_last_time(station_name)
+    next_data = times.get(station_name, "next")
+    last_data = times.get(station_name, "last")
     # messageビルド
     message_last = message.build(next_data, "次の出発")
     message_next = message.build(last_data, "最終")
