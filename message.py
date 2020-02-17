@@ -1,5 +1,5 @@
-# メッセージの作成
-def create_message(info, next_or_last):
+
+def build(info, next_or_last):
     if info == False:
         return "駅名が存在しないよ！"
     else:
