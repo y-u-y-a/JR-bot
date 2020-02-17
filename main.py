@@ -16,7 +16,7 @@ LINE_CHANNEL_SECRET       = os.environ["LINE_CHANNEL_SECRET"]
 # Botのインスタンスの作成
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 # webhookとはイベント発生時に指定したURLにPOSTリクエストする仕組みのこと
-handler      = WebhookHandler(LINE_CHANNEL_SECRET)
+handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
 # Flaskクラスで用意してあるrouteというメソッドをデコレートしている
 @app.route("/callback", methods=['POST'])
@@ -37,8 +37,8 @@ def callback():
 # WebhookHandlerクラスで用意してあるaddというメソッドをデコレートしている
 @handler.add(MessageEvent, message=TextMessage)
 # 駅名から列車到着時刻を取得する
-def reply_message(event):  # "event"には、"MessageEvent"が入る
-    get_text = event.message.text.replace("駅", "")
+def reply_message(MessageEvent):
+    get_text = MessageEvent.message.text.replace("駅", "")
 
     if "終電" in get_text:
         station_name = get_text.replace("終電", "")
@@ -52,7 +52,7 @@ def reply_message(event):  # "event"には、"MessageEvent"が入る
     # メッセージをビルド
     message = func.create_message(info, next_or_last)
     line_bot_api.reply_message(
-        event.reply_token, # 送信相手とのトークン？
+        MessageEvent.reply_token, # 送信相手とのトークン？
         TextSendMessage(
             text=message
         )
