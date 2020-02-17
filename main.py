@@ -36,7 +36,7 @@ def callback():
 # WebhookHandlerクラスで用意してあるaddというメソッドをデコレートして実行
 @handler.add(MessageEvent, message=TextMessage)
 
-def sample():
+def sample(MessageEvent):
     station_name = MessageEvent.message.text.replace("駅", "")
     # スクレイピング・メッセージビルド
     next_data = scrape.reply_next_time(station_name)
