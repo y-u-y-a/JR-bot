@@ -4,10 +4,8 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
     TemplateSendMessage, ButtonsTemplate,URIAction
 )
-
-from flask import Flask, request, abort
 import os
-
+from flask import Flask, request, abort
 from functions import times, message
 
 # Flaskクラスのインスタンスを生成し、変数appに代入する
@@ -54,21 +52,21 @@ def reply_message(MessageEvent):
             TextSendMessage(text=message_last),
             TextSendMessage(text=message_next),
             # ボタンmessage
-            TemplateSendMessage(
-                alt_text="JR-times",
-                template=ButtonsTemplate(
-                    title="全ての時刻表を表示する",
-                    text="外部ページにアクセスします",
-                    thumbnail_image_url="https://example.com/bot/images/image.jpg",
-                    image_size="cover",
-                    actions=[
-                        URIAction(
-                            uri="https://qiita.com/shimayu22/items/c599a94dfa39c6466dfa",
-                            label="移動する"
-                        )
-                    ]
-                )
-            )
+            # TemplateSendMessage(
+            #     alt_text="JR-times",
+            #     template=ButtonsTemplate(
+            #         title="全ての時刻表を表示する",
+            #         text="外部ページにアクセスします",
+            #         thumbnail_image_url="./images/JR.jpeg",
+            #         image_size="cover",
+            #         actions=[
+            #             URIAction(
+            #                 uri="https://qiita.com/shimayu22/items/c599a94dfa39c6466dfa",
+            #                 label="移動する"
+            #             )
+            #         ]
+            #     )
+            # )
         ]
     )
 

@@ -96,7 +96,6 @@ def get_min_dest(dl_tag, minute):
                 "min": str(min),
                 "dest": str(dest)
             }
-            break
 
 
 # NAVITIMEから駅の時刻表ページのURLを取得
