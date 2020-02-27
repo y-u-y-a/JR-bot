@@ -8,12 +8,12 @@ import os
 from flask import Flask, request, abort
 from functions import times, message
 
-# Flaskクラスのインスタンスを生成し、変数appに代入する
+# Flaskクラスのインスタンスを生成
 app = Flask(__name__)
 
 # 環境変数の取得
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
-LINE_CHANNEL_SECRET       = os.environ["LINE_CHANNEL_SECRET"]
+LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 # Botのインスタンスの作成
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
@@ -27,7 +27,7 @@ def callback():
     # リクエストボディを取得する
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
-    # 署名検証で例外ならばエラーを出す
+    # 署名検証で例外処理
     try:
         handler.handle(body, signature)
     except InvalidSignatureError:
